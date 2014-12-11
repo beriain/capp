@@ -1,0 +1,215 @@
+<html>
+	<head>
+		<title>Work System Station</title>
+		<!--CSS-->
+		<style>
+			progress{  
+				background-color: gray;
+				border:0;
+				width:400px;
+				height:25px;
+			}
+			body{
+				background-color: #f3f3f3;
+			}
+			textarea{
+				width:400px;
+				height:80%;
+				resize:none;
+			}
+		</style>
+		<!--JAVASCRIPT-->
+		<script>
+			function loading()
+			{
+				//random to vary the loading speed
+				var to = Math.floor((Math.random() * 500) + 10);
+				//the progress bar
+				var bar = document.getElementById("b");
+				//place to write the percentage
+				var x = document.getElementById("p");
+				//get the progress bar value
+				var n = bar.value;
+				//if it's less than 100 increase it
+				if(n < 100) n++;
+				//else set to 0
+				else n = 0;
+				//pass the new value to the progress bar
+				bar.value = n;
+				//write the percentage
+				x.innerHTML = n;
+				writeSentence();
+				setTimeout(function(){loading()},to);
+			}
+			
+			function writeSentence()
+			{
+				//random 1 for the sentence
+				var v = Math.floor((Math.random() * 16) + 1);
+				//random 2 for the sentence
+				var s = Math.floor((Math.random() * 17) + 1);
+				//random 3 for the sentence
+				var n = Math.floor((Math.random() * 10) + 1);
+				//place to write the sentence
+				var f = document.getElementById("f");
+				//fake log
+				var l = document.getElementById("log");
+				//empty variable for the sentence
+				var sen = "";
+				//build the sentence, first pass
+				switch(v)
+				{
+					case 1:
+						sen = sen + "Compiling ";
+						break;
+					case 2:
+						sen = sen + "Assembling ";
+						break;
+					case 3:
+						sen = sen + "Calculating ";
+						break;
+					case 4:
+						sen = sen + "Replacing ";
+						break;
+					case 5:
+						sen = sen + "Fixing ";
+						break;
+					case 6:
+						sen = sen + "Assigning ";
+						break;
+					case 7:
+						sen = sen + "Executing ";
+						break;
+					case 8:
+						sen = sen + "Configuring ";
+						break;
+					case 9:
+						sen = sen + "Parsing ";
+						break;
+					case 10:
+						sen = sen + "Cleaning ";
+						break;
+					case 11:
+						sen = sen + "Loading ";
+						break;
+					case 12:
+						sen = sen + "Decrypting ";
+						break;
+					case 13:
+						sen = sen + "Starting ";
+						break;
+					case 14:
+						sen = sen + "Checking ";
+						break;
+					case 15:
+						sen = sen + "Processing ";
+						break;
+					case 16:
+						sen = sen + "Reading ";
+						break;
+				}
+				//build the sentence, second pass
+				switch(s)
+				{
+					case 1:
+						sen = sen + "document ";
+						break;
+					case 2:
+						sen = sen + "variable ";
+						break;
+					case 3:
+						sen = sen + "algorithm ";
+						break;
+					case 4:
+						sen = sen + "value ";
+						break;
+					case 5:
+						sen = sen + "array ";
+						break;
+					case 6:
+						sen = sen + "database ";
+						break;
+					case 7:
+						sen = sen + "library ";
+						break;
+					case 8:
+						sen = sen + "function ";
+						break;
+					case 9:
+						sen = sen + "script ";
+						break;
+					case 10:
+						sen = sen + "object ";
+						break;
+					case 11:
+						sen = sen + "parameter ";
+						break;
+					case 12:
+						sen = sen + "file ";
+						break;
+					case 13:
+						sen = sen + "buffer ";
+						break;
+					case 14:
+						sen = sen + "instruction ";
+						break;
+					case 15:
+						sen = sen + "protocol ";
+						break;
+					case 16:
+						sen = sen + "volume ";
+						break;
+					case 17:
+						sen = sen + "directory ";
+						break;
+					case 18:
+						sen = sen + "bookmark ";
+						break;
+				}
+				//build the sentence, third and last pass
+				switch(n)
+				{
+					case 1:
+						sen = sen + "o.cpp... ";
+						break;
+					case 2:
+						sen = sen + "doc.docx... ";
+						break;
+					case 3:
+						sen = sen + "index.html... ";
+						break;
+					case 4:
+						sen = sen + "new.xml... ";
+						break;
+					case 5:
+						sen = sen + "table.xlsx... ";
+						break;
+					case 6:
+						sen = sen + "file.py... ";
+						break;
+					case 7:
+						sen = sen + "42... ";
+						break;
+					case 8:
+						sen = sen + "db.sql... ";
+						break;
+					case 9:
+						sen = sen + "config.sh... ";
+						break;
+					case 10:
+						sen = sen + "main()... ";
+						break;
+				}
+				f.innerHTML = sen;
+				log.value = sen + "\n" + log.value;
+			}
+		</script>
+	</head>
+	<body onload="loading()">
+			<h4 id="f"></h4>
+			<progress id="b" max="100" value="0"></progress>
+			<span id="p"></span>%<br/><br/>
+			System log:<br/>
+			<textarea id="log" readonly></textarea>
+	</body>
+</html>
