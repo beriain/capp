@@ -25,9 +25,7 @@
 				color:white;
 				font-weight:bold;
 				font-family:sans-serif;
-				border:2px dashed #0064B4;
-				border-radius:5px;
-				box-shadow:0 5px 0 black;
+				margin-right: 5px;
 			}
 			button:disabled{
 				background-color:transparent;
@@ -36,37 +34,33 @@
 			button:hover{
 				background-color:#0064B4;
 			}
-			meter#m{
+			meter{
 				width:200px;
-			}
-			meter.chartmeter{
-				width:50px;
-				transform: rotate(270deg);
-				margin:-18px;
 			}
 		</style>
 		<!--JAVASCRIPT-->
 		<script>
-			var chartvalues = new Array();
 			function load()
 			{
 				loading();
 				measure();
-				setMeters();
 			}
 			function loading()
 			{
 				var to = Math.floor((Math.random() * 500) + 10);
-				var bar = document.getElementById("b");
+				var bar = document.getElementById("progress-bar");
 				var x = document.getElementById("p");
 				var b = document.getElementById("resume");
 				b.disabled = true;
+				b.style.background = "#f3f3f3";
 				var p = document.getElementById("pause");
 				p.disabled = false;
-				var n = bar.value;
+				p.style.background = "blue";
+				var n = bar.style.width;
+				n = n.slice(0, -1);
 				if(n < 100) n++;
 				else n = 0;
-				bar.value = n;
+				bar.style.width=n+"%";
 				x.innerHTML = n;
 				writeSentence();
 				timeout = setTimeout(function(){loading()},to);
@@ -232,12 +226,14 @@
 			{
 				var b = document.getElementById("resume");
 				b.disabled = false;
+				b.style.background = "blue";
 				var p = document.getElementById("pause");
 				p.disabled = true;
+				p.style.background = "f3f3f3";
 				clearTimeout(timeout);
 				clearTimeout(tomeasure);
 				var meter = document.getElementById("m");
-				meter.value = 0;
+				meter.style.width = 0;
 
 				document.getElementById("f").innerHTML = "PAUSED.";
 				var months = ["January", "February", "March", "April", "May", "June",
@@ -255,13 +251,9 @@
 			{
 				var meter = document.getElementById("m");
 				var v = Math.floor((Math.random() * 100) + 1);
-				meter.value = v;
-				var elements = document.getElementsByClassName("chartmeter");
-				for(x = 0; x < elements.length; x++)
-				{
-					elements[x].value = Math.floor((Math.random() * 100) + 1);
-				}
-				draw(v);
+				if(v < 80) meter.style.background = "#77AA33";
+				else meter.style.background = "#DDBB33";
+				meter.style.width = v+"%";
 				tomeasure = setTimeout(function(){measure()},500);
 			}
 
@@ -278,100 +270,45 @@
 				{
 					var log = document.getElementById("log");
 					log.value = "Compression enabled..." + "\n" + log.value;
-					document.querySelector("label[for='compression']").innerHTML = "Enabled";
+					document.getElementById("clabel").innerHTML = "Enabled";
 				}
 				else
 				{
 					var log = document.getElementById("log");
 					log.value = "Compression disabled..." + "\n" + log.value;
-					document.querySelector("label[for='compression']").innerHTML = "Disabled";
+					document.getElementById("clabel").innerHTML = "Disabled";
 				}
-			}
-
-			function draw(v)
-			{
-				chartvalues.push(v);
-				var c = document.getElementById("chart");
-				var ctx = c.getContext("2d");
-				var p = 300;
-				ctx.clearRect(0, 0, c.width, c.height);
-				for(x = chartvalues.length; x > 0; x--)
-				{
-					ctx.strokeStyle = '#00FF00';
-					ctx.beginPath();
-					ctx.moveTo(p,150);
-					ctx.lineTo(p,150-chartvalues[x]);
-					ctx.stroke();
-					ctx.closePath();
-					p--;
-				}
-				if(chartvalues.length == 300)
-					chartvalues.splice(0, 1);
-			}
-
-			function setMeters()
-			{
-				var d = document.getElementById("meters");
-				d.innerHTML = "";
-				for(x = 0; x < document.getElementById("CoresBar").value; x++)
-				{
-					var m = document.createElement("meter");
-					m.className = "chartmeter";
-					m.min = "0";
-					m.max = "150";
-					m.high = "125";
-					m.optimum = "75";
-					m.value = "0";
-					d.appendChild(m);
-				}
-				var log = document.getElementById("log");
-				log.value = "Now using " + document.getElementById("CoresBar").value + " core(s)..." + "\n" + log.value;
 			}
 		</script>
 	</head>
 	<body onload="load()">
-		<div style="width:60%; float:left;">
+		<div style="width:60%; float:left; height: 100%;">
 			<h4 id="f"></h4>
-			<progress id="b" max="100" value="0"></progress>
+			<div id="container" style="width:300px; height:15px; border:1px solid black;">
+				<div id="progress-bar" style="width:50%;/*change this width */
+					background:blue;
+					height:15px;">
+				</div>
+			</div>
 			<span id="p"></span>%<br/><br/>
 			<button id="pause"onclick="stop()">Pause</button>
 			<button id="resume"onclick="load()">Resume</button><br/><br/>
 			Station's work load<br/>
-			<meter min="0" max="100" high="85" optimum="50" value="50" id="m">Station work measure</meter><br/><br/>
+			<div id="container2" style="width:200px; height:15px; background: grey;">
+				<div id="m" style="width:50%;
+					background:yellow;
+					height:15px;">
+				</div>
+			</div>
 			System log:<br/>
 			<textarea id="log" readonly></textarea>
-		</div>
-		<div style="border:1px solid gray; width:30%; float:right; padding:5px;">
-			<div style="float:left; padding:5px;">
-				CORES:<br/>
-				<input type="range" id="CoresBar" min="1" max="4" step="1" value="4"
-					oninput="showSliderValue()" onchange="setMeters()" orient="vertical" style="position:relative; left:35%;"/><br />
-				<div id="cores" style="position:relative; left:40%;">4</div>
-			</div>
-			<div style="float:left; padding:5px;">
-				RAM:<br/>
-				<input type="range" id="RAMBar" min="128" max="2048" step="128" value="1024"
-				 	oninput="showSliderValue()" orient="vertical" style="position:relative; left:25%;"/><br />
-				<div id="ram"  style="position:relative; left:10%;">1024</div>
-			</div>
-			<div style="float:left; padding:5px; overflow:hidden;">
-				DISK:<br/>
-				<input type="range" id="DiskBar" min="150" max="1000" step="1" value="300"
-					oninput="showSliderValue()" orient="vertical" style="position:relative; left:25%;"/><br />
-				<div id="disk"  style="position:relative; left:20%;">150</div>
-			</div>
 		</div>
 		<div style="border:1px solid gray; width:30%; float:right; padding:5px; margin-top: 5px;">
 			<div>
 				Compression:
-				<input id="compression" type="checkbox" onchange="switchCompression()">
-				<label for="compression">Disabled</label>
+				<input id="compression" type="checkbox" onclick="switchCompression()">
+				<label for="compression" id="clabel">Disabled</label>
 			</div>
-		</div>
-		<div style="border:1px solid gray; width:300px; height:75px; float:right; margin-top:5px;">
-			<canvas id="chart" style=" width:100%; height:75px; background:black;"></canvas>
-		</div>
-		<div id="meters" style="text-align: right; width:30%; height:60px; float:right; margin-top: 45px;">
 		</div>
 	</body>
 </html>
