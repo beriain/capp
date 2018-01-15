@@ -3,7 +3,7 @@ capp
 
 Simple tool designed to take a break in those long working days. Relax, let capp work and go for a coffee
 
-Highly inspired by cappuccino for Debian, give it a try ;-) (https://packages.debian.org/wheezy/cappuccino).
+Highly inspired by cappuccino for Debian, give it a try ;-) (https://packages.debian.org/stretch/cappuccino).
 
 Tested with latest Firefox
 
